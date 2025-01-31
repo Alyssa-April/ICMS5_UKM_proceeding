@@ -1,0 +1,272 @@
+---
+title: "Volume"
+output: html_document
+date: "2023-02-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+#_______________________________________________________________________________
+
+### LOAD LIBRARIES
+
+```{r libraries, message = FALSE}
+library(readxl) # to import the data in Excel to R
+```
+
+#_______________________________________________________________________________
+
+### 2008 Global Financial Crisis
+
+```{r whole GFC, message = FALSE}
+
+# load Excel sheet into R, use col_types = "numeric" so that the volume values
+# won't be imported as characters
+vol_whole_GFC <- read_excel("C:/Users/User/Desktop/ICMS5/2008 GFC Data Set.xlsx", 
+                                   sheet = "Volume Whole", col_types = "numeric") 
+
+vol_whole_GFC <- vol_whole_GFC[2:ncol(vol_whole_GFC)] # remove "Exchange Date" column
+
+vol_whole_GFC <- as.data.frame(vol_whole_GFC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_whole_GFC <- apply(vol_whole_GFC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_whole_GFC)){
+  vol_whole_GFC[,i][is.na(vol_whole_GFC[,i])] <- mean_whole_GFC[i]
+}
+
+mean(colMeans(vol_whole_GFC)) # get the mean for overall period
+```
+
+```{r pre GFC, message = FALSE}
+
+vol_pre_GFC <- read_excel("C:/Users/User/Desktop/ICMS5/2008 GFC Data Set.xlsx", 
+                                   sheet = "Vol Pre", col_types = "numeric") 
+
+vol_pre_GFC <- vol_pre_GFC[2:ncol(vol_pre_GFC)] # remove "Exchange Date" column
+
+vol_pre_GFC <- as.data.frame(vol_pre_GFC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_pre_GFC <- apply(vol_pre_GFC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_pre_GFC)){
+  vol_pre_GFC[,i][is.na(vol_pre_GFC[,i])] <- mean_pre_GFC[i]
+}
+
+mean(colMeans(vol_pre_GFC)) # get the mean for pre period
+```
+```{r during GFC, message = FALSE}
+
+vol_during_GFC <- read_excel("C:/Users/User/Desktop/ICMS5/2008 GFC Data Set.xlsx", 
+                                   sheet = "Vol During", col_types = "numeric") 
+
+vol_during_GFC <- vol_during_GFC[2:ncol(vol_during_GFC)] # remove "Exchange Date" column
+
+vol_during_GFC <- as.data.frame(vol_during_GFC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_during_GFC <- apply(vol_during_GFC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_during_GFC)){
+  vol_during_GFC[,i][is.na(vol_during_GFC[,i])] <- mean_during_GFC[i]
+}
+
+mean(colMeans(vol_during_GFC)) # get the mean for during period
+```
+
+```{r post GFC, message = FALSE}
+
+vol_post_GFC <- read_excel("C:/Users/User/Desktop/ICMS5/2008 GFC Data Set.xlsx", 
+                                   sheet = "Vol Post", col_types = "numeric") 
+
+vol_post_GFC <- vol_post_GFC[2:ncol(vol_post_GFC)] # remove "Exchange Date" column
+
+vol_post_GFC <- as.data.frame(vol_post_GFC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_post_GFC <- apply(vol_post_GFC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_post_GFC)){
+  vol_post_GFC[,i][is.na(vol_post_GFC[,i])] <- mean_post_GFC[i]
+}
+
+mean(colMeans(vol_post_GFC)) # get the mean for post period
+```
+
+#_______________________________________________________________________________
+
+### 2015 Stock Market Crash
+
+```{r whole SMC, message = FALSE}
+
+# load Excel sheet into R, use col_types = "numeric" so that the volume values
+# won't be imported as characters
+vol_whole_SMC <- read_excel("C:/Users/User/Desktop/ICMS5/2015 SMC Data Set.xlsx", 
+                                   sheet = "Volume Whole", col_types = "numeric") 
+
+vol_whole_SMC <- vol_whole_SMC[2:ncol(vol_whole_SMC)] # remove "Exchange Date" column
+
+vol_whole_SMC <- as.data.frame(vol_whole_SMC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_whole_SMC <- apply(vol_whole_SMC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_whole_SMC)){
+  vol_whole_SMC[,i][is.na(vol_whole_SMC[,i])] <- mean_whole_SMC[i]
+}
+
+mean(colMeans(vol_whole_SMC)) # get the mean for overall period
+```
+
+```{r pre SMC, message = FALSE}
+
+vol_pre_SMC <- read_excel("C:/Users/User/Desktop/ICMS5/2015 SMC Data Set.xlsx", 
+                                   sheet = "Vol Pre", col_types = "numeric") 
+
+vol_pre_SMC <- vol_pre_SMC[2:ncol(vol_pre_SMC)] # remove "Exchange Date" column
+
+vol_pre_SMC <- as.data.frame(vol_pre_SMC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_pre_SMC <- apply(vol_pre_SMC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_pre_SMC)){
+  vol_pre_SMC[,i][is.na(vol_pre_SMC[,i])] <- mean_pre_SMC[i]
+}
+
+mean(colMeans(vol_pre_SMC)) # get the mean for pre period
+```
+```{r during SMC, message = FALSE}
+
+vol_during_SMC <- read_excel("C:/Users/User/Desktop/ICMS5/2015 SMC Data Set.xlsx", 
+                                   sheet = "Vol During", col_types = "numeric") 
+
+vol_during_SMC <- vol_during_SMC[2:ncol(vol_during_SMC)] # remove "Exchange Date" column
+
+vol_during_SMC <- as.data.frame(vol_during_SMC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_during_SMC <- apply(vol_during_SMC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_during_SMC)){
+  vol_during_SMC[,i][is.na(vol_during_SMC[,i])] <- mean_during_SMC[i]
+}
+
+mean(colMeans(vol_during_SMC)) # get the mean for during period
+```
+
+```{r post SMC, message = FALSE}
+
+vol_post_SMC <- read_excel("C:/Users/User/Desktop/ICMS5/2015 SMC Data Set.xlsx", 
+                                   sheet = "Vol Post", col_types = "numeric") 
+
+vol_post_SMC <- vol_post_SMC[2:ncol(vol_post_SMC)] # remove "Exchange Date" column
+
+vol_post_SMC <- as.data.frame(vol_post_SMC) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_post_SMC <- apply(vol_post_SMC, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_post_SMC)){
+  vol_post_SMC[,i][is.na(vol_post_SMC[,i])] <- mean_post_SMC[i]
+}
+
+mean(colMeans(vol_post_SMC)) # get the mean for post period
+```
+
+#_______________________________________________________________________________
+
+### COVID-19
+
+```{r whole C19, message = FALSE}
+
+# load Excel sheet into R, use col_types = "numeric" so that the volume values
+# won't be imported as characters
+vol_whole_C19 <- read_excel("C:/Users/User/Desktop/ICMS5/COVID-19 Data Set.xlsx", 
+                                   sheet = "Volume Whole", col_types = "numeric") 
+
+vol_whole_C19 <- vol_whole_C19[2:ncol(vol_whole_C19)] # remove "Exchange Date" column
+
+vol_whole_C19 <- as.data.frame(vol_whole_C19) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_whole_C19 <- apply(vol_whole_C19, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_whole_C19)){
+  vol_whole_C19[,i][is.na(vol_whole_C19[,i])] <- mean_whole_C19[i]
+}
+
+mean(colMeans(vol_whole_C19)) # get the mean for overall period
+```
+
+```{r pre C19, message = FALSE}
+
+vol_pre_C19 <- read_excel("C:/Users/User/Desktop/ICMS5/COVID-19 Data Set.xlsx", 
+                                   sheet = "Vol Pre", col_types = "numeric") 
+
+vol_pre_C19 <- vol_pre_C19[2:ncol(vol_pre_C19)] # remove "Exchange Date" column
+
+vol_pre_C19 <- as.data.frame(vol_pre_C19) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_pre_C19 <- apply(vol_pre_C19, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_pre_C19)){
+  vol_pre_C19[,i][is.na(vol_pre_C19[,i])] <- mean_pre_C19[i]
+}
+
+mean(colMeans(vol_pre_C19)) # get the mean for pre period
+```
+```{r during C19, message = FALSE}
+
+vol_during_C19 <- read_excel("C:/Users/User/Desktop/ICMS5/COVID-19 Data Set.xlsx", 
+                                   sheet = "Vol During", col_types = "numeric") 
+
+vol_during_C19 <- vol_during_C19[2:ncol(vol_during_C19)] # remove "Exchange Date" column
+
+vol_during_C19 <- as.data.frame(vol_during_C19) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_during_C19 <- apply(vol_during_C19, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_during_C19)){
+  vol_during_C19[,i][is.na(vol_during_C19[,i])] <- mean_during_C19[i]
+}
+
+mean(colMeans(vol_during_C19)) # get the mean for during period
+```
+
+```{r post C19, message = FALSE}
+
+vol_post_C19 <- read_excel("C:/Users/User/Desktop/ICMS5/COVID-19 Data Set.xlsx", 
+                                   sheet = "Vol Post", col_types = "numeric") 
+
+vol_post_C19 <- vol_post_C19[2:ncol(vol_post_C19)] # remove "Exchange Date" column
+
+vol_post_C19 <- as.data.frame(vol_post_C19) # convert to data frame
+
+# getting mean of each column using apply() 
+mean_post_C19 <- apply(vol_post_C19, 2, mean, na.rm = TRUE)
+
+# imputing mean value with NA 
+for(i in colnames(vol_post_C19)){
+  vol_post_C19[,i][is.na(vol_post_C19[,i])] <- mean_post_C19[i]
+}
+
+mean(colMeans(vol_post_C19)) # get the mean for post period
+```
