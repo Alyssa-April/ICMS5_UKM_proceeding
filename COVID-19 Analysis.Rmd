@@ -1,0 +1,139 @@
+---
+title: "Proc COVID-19"
+output: html_document
+date: "2023-02-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#_______________________________________________________________________________
+
+### LOAD LIBRARIES
+
+```{r libraries, message = FALSE}
+library(readxl) # to import the data in Excel to R
+library(igraph) # for network analysis
+library(DescTools) # access to FisherZ() and FisherZInv() functions
+library(corrplot) # to visualise the correlation matrix
+library(RColorBrewer) # to change the colour in correlogram
+library(dplyr)
+library(huxtable)
+```
+
+#_______________________________________________________________________________
+
+### THRESHOLD VALUE AND CUT 
+
+```{r preC19, message = FALSE}
+
+close_price_preC19 <- read_excel("C:/Users/User/Desktop/Network Science/Project and Presentation/COVID-19 Data Set.xlsx", sheet = 4) # load Excel sheet into R
+
+logreturnf <- function(x) { # function to find log returns of closing prices
+  diff(log(x))
+}
+
+close_clean_preC19 <- close_price_preC19[2:ncol(close_price_preC19)] # remove "Exchange Date" column
+
+returns_preC19 <- sapply(close_clean_preC19, logreturnf) # compute log returns
+
+R_preC19 <- cor(returns_preC19) # this is a Pearson correlation 
+
+corrplot_pre_C19 <- R_preC19 # save correlation matrix for correlogram
+```
+
+```{r duringC19, message = FALSE}
+
+close_price_duringC19 <- read_excel("C:/Users/User/Desktop/Network Science/Project and Presentation/COVID-19 Data Set.xlsx", sheet = 5) # load Excel sheet into R
+
+close_clean_duringC19 <- close_price_duringC19[2:ncol(close_price_duringC19)] # remove "Exchange Date" column
+
+returns_duringC19 <- sapply(close_clean_duringC19, logreturnf) # compute log returns
+
+R_duringC19 <- cor(returns_duringC19) # this is a Pearson correlation 
+
+corrplot_during_C19 <- R_duringC19 # save correlation matrix for correlogram
+```
+
+```{r postc19, message = FALSE}
+close_price_postC19 <- read_excel("C:/Users/User/Desktop/Network Science/Project and Presentation/COVID-19 Data Set.xlsx", sheet = 6) # load Excel sheet into R
+
+close_clean_postC19 <- close_price_postC19[2:ncol(close_price_postC19)] # remove "Exchange Date" column
+
+returns_postC19 <- sapply(close_clean_postC19, logreturnf) # compute log returns
+
+R_postC19 <- cor(returns_postC19) # this is a Pearson correlation 
+
+corrplot_post_C19 <- R_postC19 # save correlation matrix for correlogram
+```
+
+```{r overallc19, message = FALSE}
+close_price_ovrC19 <- read_excel("C:/Users/User/Desktop/Network Science/Project and Presentation/COVID-19 Data Set.xlsx", sheet = 7) # load Excel sheet into R
+
+close_clean_ovrC19 <- close_price_ovrC19[2:ncol(close_price_ovrC19)] # remove "Exchange Date" column
+
+returns_ovrC19 <- sapply(close_clean_ovrC19, logreturnf) # compute log returns
+
+R_ovrC19 <- cor(returns_ovrC19) # this is a Pearson correlation 
+
+corrplot_ovr_C19 <- R_ovrC19 # save correlation matrix for correlogram
+```
+#_______________________________________________________________________________
+
+### CORRELOGRAM
+
+```{r correlogram, echo = FALSE}
+layout(matrix(c(1,2,3,4), nrow = 1))
+
+corrplot(corrplot_ovr_C19, method ="color", tl.pos = 'n', 
+         col = c("red", "blue"), mar = c(0,0,5,0)) 
+mtext("Overall COVID-19 Period", line = -11, cex = 0.6)
+
+corrplot(corrplot_pre_C19, method ="color", tl.pos = 'n', 
+         col =  c("red", "blue"), mar = c(0,0,5,0)) 
+mtext("Pre-COVID-19", line = -11, cex = 0.6)
+
+corrplot(corrplot_during_C19, method ="color", tl.pos = 'n', 
+         col = c("red", "blue"), mar = c(0,0,5,0)) 
+mtext("During COVID-19", line = -11, cex = 0.6)
+
+corrplot(corrplot_post_C19, method ="color", tl.pos = 'n', 
+         col =  c("red", "blue"),  mar = c(0,0,5,0)) 
+mtext("Post-COVID-19", line = -11, cex = 0.6)
+```
+#_______________________________________________________________________________
+
+### CORRELATION DESCRIPTIVES
+
+```{r corr table, message = FALSE}
+corr_ovr_C19 <- cbind("Overall", min(R_ovrC19), max(R_ovrC19), mean(R_ovrC19), mean(abs(R_ovrC19)),
+                      length(R_ovrC19[R_ovrC19 < 0]), 
+                      length(R_ovrC19[R_ovrC19 > 0])) # correlation descriptives for ovr-covid
+
+corr_pre_C19 <- cbind("Pre", min(R_preC19), max(R_preC19), mean(R_preC19), mean(abs(R_preC19)),
+                  length(R_preC19[R_preC19 < 0]), 
+                  length(R_preC19[R_preC19 > 0])) # correlation descriptives for pre-covid
+
+corr_during_C19 <- cbind("During", min(R_duringC19), max(R_duringC19), mean(R_duringC19),
+                         mean(abs(R_duringC19)),
+                  length(R_duringC19[R_duringC19 < 0]), 
+                  length(R_duringC19[R_duringC19 > 0])) # correlation descriptives for during covid
+
+corr_post_C19 <- cbind("Post", min(R_postC19), max(R_postC19), mean(R_postC19), mean(abs(R_postC19)),
+                     length(R_postC19[R_postC19 < 0]), 
+                     length(R_postC19[R_postC19 > 0])) # correlation descriptives for  post-covid
+
+corr_col_names <- c("Period", "Minimum", "Maximum", "Mean", "Absolute Mean",
+                    "Negative Correlations", "Positive Correlations") # name the columns
+
+as_hux(rbind(corr_col_names,corr_ovr_C19, corr_pre_C19, corr_during_C19, corr_post_C19)) %>%
+  set_caption("Table 1: Correlation Descriptives") %>%
+  set_right_border(everywhere, everywhere) %>%
+  set_left_border(everywhere, 1) %>%
+  set_bottom_border(everywhere, everywhere) %>%
+  set_top_border(1, everywhere) %>%
+  set_align(everywhere, everywhere, "centre") %>%
+  set_bold(1, everywhere, value = TRUE) # create a table for the descriptive values of each year side by side
+```
+#_______________________________________________________________________________
